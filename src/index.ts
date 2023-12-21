@@ -4,9 +4,12 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import compression from "compression";
 import cors from "cors";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 
 import router from "./router";
-import mongoose from "mongoose";
+
+dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -27,11 +30,8 @@ server.listen(port, () => {
   console.log(`Server running on http://localhost:${port}/`);
 });
 
-const MONGO_URL =
-  "mongodb+srv://akshay:akshay@cluster0.0t9zmus.mongodb.net/?retryWrites=true&w=majority"; // DB URI
-
 mongoose.Promise = Promise;
-mongoose.connect(MONGO_URL);
+mongoose.connect(process.env.MONGO_URL);
 mongoose.connection.on("error", (error: Error) => console.log(error));
 
 app.use("/", router());
